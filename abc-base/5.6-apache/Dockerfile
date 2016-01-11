@@ -1,4 +1,3 @@
-# ABC Manager base PHP 5.6 image.
 FROM php:5.6-apache
 MAINTAINER Angry Bytes <info@angrybytes.com>
 
