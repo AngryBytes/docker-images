@@ -16,18 +16,22 @@ RUN a2enmod \
     rewrite
 
 # Install PHP extensions.
-RUN docker-php-ext-install \
-    exif \
-    gd \
-    mbstring \
-    mcrypt \
-    pcntl \
-    pdo_mysql \
-    zip
+RUN docker-php-ext-configure gd \
+        --with-jpeg-dir=/usr \
+        --with-freetype-dir=/usr \
+    && docker-php-ext-install \
+        exif \
+        gd \
+        mbstring \
+        mcrypt \
+        pcntl \
+        pdo_mysql \
+        zip
 
 # Install PECL extensions.
-RUN pecl install \
-    memcached
+RUN PECL_EXTS=memcached \
+    && pecl install $PECL_EXTS \
+    && docker-php-ext-enable $PECL_EXTS
 
 # Install composer. The COMPOSER_HOME is for compatibility with the
 # composer/composer image. Ensure it exists, so users can copy in auth.json.
