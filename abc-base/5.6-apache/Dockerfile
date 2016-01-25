@@ -29,8 +29,9 @@ RUN docker-php-ext-configure gd \
         zip
 
 # Install PECL extensions.
-RUN pecl install \
-    memcached
+RUN PECL_EXTS=memcached \
+    && pecl install $PECL_EXTS \
+    && docker-php-ext-enable $PECL_EXTS
 
 # Install composer. The COMPOSER_HOME is for compatibility with the
 # composer/composer image. Ensure it exists, so users can copy in auth.json.
