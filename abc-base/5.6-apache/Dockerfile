@@ -16,7 +16,8 @@ RUN a2enmod \
     rewrite
 
 # Install PHP extensions.
-RUN docker-php-ext-configure gd \
+RUN docker-php-ext-enable opcache \
+    && docker-php-ext-configure gd \
         --with-jpeg-dir=/usr \
         --with-freetype-dir=/usr \
     && docker-php-ext-install \
