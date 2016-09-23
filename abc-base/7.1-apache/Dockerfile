@@ -7,7 +7,6 @@ RUN apt-get update -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng12-dev \
-        libmemcached-dev \
     && rm -r /var/lib/apt/lists/*
 
 # Enable Apache modules.
@@ -28,10 +27,9 @@ RUN docker-php-ext-enable opcache \
         zip
 
 # Install PECL extensions.
-# FIXME: Waiting on a PHP 7 compatible release of the memcached extension
-#RUN PECL_EXTS=memcached \
-#    && pecl install $PECL_EXTS \
-#    && docker-php-ext-enable $PECL_EXTS
+RUN PECL_EXTS="redis" \
+    && pecl install $PECL_EXTS \
+    && docker-php-ext-enable $PECL_EXTS
 
 # Install composer. The COMPOSER_HOME is for compatibility with the
 # composer/composer image. Ensure it exists, so users can copy in auth.json.

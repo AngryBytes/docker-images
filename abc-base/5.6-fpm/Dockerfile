@@ -24,7 +24,7 @@ RUN docker-php-ext-enable opcache \
         zip
 
 # Install PECL extensions.
-RUN PECL_EXTS=memcached \
+RUN PECL_EXTS="memcached" \
     && pecl install $PECL_EXTS \
     && docker-php-ext-enable $PECL_EXTS
 
