@@ -6,7 +6,6 @@ RUN apt-get update -y \
     && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
-        libmcrypt-dev \
         libpng12-dev \
         libmemcached-dev \
     && rm -r /var/lib/apt/lists/*
@@ -24,13 +23,12 @@ RUN docker-php-ext-enable opcache \
         exif \
         gd \
         mbstring \
-        mcrypt \
         pcntl \
         pdo_mysql \
         zip
 
 # Install PECL extensions.
-RUN PECL_EXTS=memcached \
+RUN PECL_EXTS="memcached" \
     && pecl install $PECL_EXTS \
     && docker-php-ext-enable $PECL_EXTS
 

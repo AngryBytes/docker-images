@@ -1,4 +1,4 @@
-FROM php:5.6-fpm
+FROM php:7.1-apache
 MAINTAINER Angry Bytes <info@angrybytes.com>
 
 # Install apt packages.
@@ -7,8 +7,11 @@ RUN apt-get update -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libpng12-dev \
-        libmemcached-dev \
     && rm -r /var/lib/apt/lists/*
+
+# Enable Apache modules.
+RUN a2enmod \
+    rewrite
 
 # Install PHP extensions.
 RUN docker-php-ext-enable opcache \
@@ -24,7 +27,7 @@ RUN docker-php-ext-enable opcache \
         zip
 
 # Install PECL extensions.
-RUN PECL_EXTS="memcached" \
+RUN PECL_EXTS="redis" \
     && pecl install $PECL_EXTS \
     && docker-php-ext-enable $PECL_EXTS
 
