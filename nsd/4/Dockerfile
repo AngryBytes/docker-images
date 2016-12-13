@@ -1,8 +1,8 @@
 FROM debian:jessie
 MAINTAINER Angry Bytes <info@angrybytes.com>
 
-ENV NSD_VERSION 4.1.13
-ENV NSD_SHA256 c45cd4ba2101a027e133b2be44db9378e27602e05f09a5ef25019e1ae45291af
+ENV NSD_VERSION 4.1.14
+ENV NSD_SHA256 bdfc61c5f3bf11febd8f4776eef1d4f2d95ed70f12f11d4eeee943c186ffd802
 
 RUN buildDeps=" \
         curl \
