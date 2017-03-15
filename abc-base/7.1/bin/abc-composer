@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+# Small helper that runs composer as user `www-data`.
+# After all composer steps have run, the `$COMPOSER_HOME` should be trashed.
+
+WEB_USER="${WEB_USER:-www-data}"
+WEB_GROUP="${WEB_GROUP:-www-data}"
+
+# Ensure the Composer directory exists.
+install -o "${WEB_USER}" -g "${WEB_GROUP}" -m 755 -d "${COMPOSER_HOME}"
+
+# Run Composer as the web user.
+su -s '/bin/sh' $WEB_USER << EOF
+composer $@
+EOF
