@@ -1,5 +1,4 @@
 FROM python:2.7-alpine
-MAINTAINER Angry Bytes <info@angrybytes.com>
 
 RUN set -xe \
  && apk add --no-cache \

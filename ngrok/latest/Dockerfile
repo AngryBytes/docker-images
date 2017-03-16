@@ -1,6 +1,5 @@
 # Note: The newer busybox:glibc is missing libpthread.so.0.
 FROM busybox:ubuntu-14.04
-MAINTAINER Angry Bytes <info@angrybytes.com>
 
 # Install ngrok (latest official stable from https://ngrok.com/download).
 ADD https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip /ngrok.zip

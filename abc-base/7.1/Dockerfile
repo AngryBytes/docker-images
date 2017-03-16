@@ -1,5 +1,4 @@
 FROM php:7.1-fpm-alpine
-MAINTAINER Angry Bytes <info@angrybytes.com>
 
 # Install dependencies and PHP extensions.
 RUN set -x \
