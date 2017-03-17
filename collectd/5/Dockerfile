@@ -1,5 +1,4 @@
 FROM debian:jessie
-MAINTAINER Angry Bytes <info@angrybytes.com>
 
 ENV COLLECTD_VERSION 5.7.1
 ENV COLLECTD_SHA256 25a05fbdc6baad571554342bbac6141928bf95a47fc60ee3b32e46d0c89ef2b2

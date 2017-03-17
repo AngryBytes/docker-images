@@ -1,3 +1,3 @@
 Available as: `angrybytes/abc-base`
 
-Contains the base PHP environment required for an ABC Manager application.
+Contains the base Nginx / PHP-FPM environment for an ABC Manager application.
