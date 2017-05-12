@@ -8,6 +8,7 @@ RUN set -x \
         libjpeg-turbo \
         libpng \
         freetype \
+        pcre \
         tini \
         nginx \
  && apk add --virtual .build-deps \
@@ -16,6 +17,7 @@ RUN set -x \
         libjpeg-turbo-dev \
         libpng-dev \
         freetype-dev \
+        pcre-dev \
  && docker-php-ext-enable opcache \
  && docker-php-ext-configure gd \
         --with-webp-dir=/usr \
