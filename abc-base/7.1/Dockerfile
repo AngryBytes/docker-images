@@ -4,19 +4,21 @@ FROM php:7.1-fpm-alpine
 RUN set -x \
  && apk update \
  && apk add \
-        libwebp \
+        freetype \
+        icu-libs \
         libjpeg-turbo \
         libpng \
-        freetype \
+        libwebp \
+        nginx \
         pcre \
         tini \
-        nginx \
  && apk add --virtual .build-deps \
         $PHPIZE_DEPS \
-        libwebp-dev \
+        freetype-dev \
+        icu-dev \
         libjpeg-turbo-dev \
         libpng-dev \
-        freetype-dev \
+        libwebp-dev \
         pcre-dev \
  && docker-php-ext-enable opcache \
  && docker-php-ext-configure gd \
@@ -32,6 +34,7 @@ RUN set -x \
  && docker-php-ext-install \
         exif \
         gd \
+        intl \
         mbstring \
         pcntl \
         pdo_mysql \
