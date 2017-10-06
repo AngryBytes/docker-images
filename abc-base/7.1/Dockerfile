@@ -6,17 +6,23 @@ RUN set -x \
  && apk add \
         freetype \
         icu-libs \
+        libintl \
         libjpeg-turbo \
+        libmemcached \
         libpng \
+        libsasl \
         libwebp \
         nginx \
         pcre \
         tini \
  && apk add --virtual .build-deps \
         $PHPIZE_DEPS \
+        cyrus-sasl-dev \
         freetype-dev \
+        gettext-dev \
         icu-dev \
         libjpeg-turbo-dev \
+        libmemcached-dev \
         libpng-dev \
         libwebp-dev \
         pcre-dev \
@@ -34,14 +40,17 @@ RUN set -x \
  && docker-php-ext-install \
         exif \
         gd \
+        gettext \
         intl \
         mbstring \
         pcntl \
         pdo_mysql \
         zip \
  && pecl install \
+        memcached \
         redis \
  && docker-php-ext-enable \
+        memcached \
         redis \
  && apk del .build-deps \
  && rm -r \
