@@ -1,7 +1,7 @@
 FROM alpine
 
-ENV NSD_VERSION 4.1.16
-ENV NSD_SHA256 7f8367ad23cc5cddffa885e7e2f549123c8b4123db9726df41d99f255d6baab2
+ENV NSD_VERSION 4.1.17
+ENV NSD_SHA256 107fa506d18ed6fd0a922d1b96774afd9270ec38ec6b17cd7c46fb9433a03a6c
 
 RUN set -x \
  && apk update \
@@ -12,6 +12,7 @@ RUN set -x \
         curl \
         gcc \
         make \
+        coreutils \
         libc-dev \
         openssl-dev \
         libevent-dev \
@@ -27,7 +28,7 @@ RUN set -x \
          --sysconfdir=/etc \
          --localstatedir=/var \
          --enable-ratelimit \
-     && make -j"$(nproc)" \
+     && make -j "$(nproc)" \
      && make install \
  ) \
  && apk del .build-deps \
