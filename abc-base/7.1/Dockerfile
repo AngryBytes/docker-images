@@ -15,6 +15,8 @@ RUN set -x \
         libwebp \
         nginx \
         pcre \
+        postgresql-libs \
+        sqlite-libs \
         tini \
  && apk add --virtual .build-deps \
         $PHPIZE_DEPS \
@@ -28,6 +30,8 @@ RUN set -x \
         libpng-dev \
         libwebp-dev \
         pcre-dev \
+        postgresql-dev \
+        sqlite-dev \
  && docker-php-ext-enable opcache \
  && docker-php-ext-configure gd \
         --with-webp-dir=/usr \
@@ -48,6 +52,8 @@ RUN set -x \
         mbstring \
         pcntl \
         pdo_mysql \
+        pdo_pgsql \
+        pdo_sqlite \
         zip \
  && pecl install \
         memcached \
