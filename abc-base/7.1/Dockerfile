@@ -5,6 +5,7 @@ RUN set -x \
  && apk update \
  && apk add \
         freetype \
+        gmp \
         icu-libs \
         libintl \
         libjpeg-turbo \
@@ -20,6 +21,7 @@ RUN set -x \
         cyrus-sasl-dev \
         freetype-dev \
         gettext-dev \
+        gmp-dev \
         icu-dev \
         libjpeg-turbo-dev \
         libmemcached-dev \
@@ -41,6 +43,7 @@ RUN set -x \
         exif \
         gd \
         gettext \
+        gmp \
         intl \
         mbstring \
         pcntl \
