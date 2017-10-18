@@ -5,6 +5,7 @@ RUN set -x \
  && apk update \
  && apk add \
         freetype \
+        gmp \
         icu-libs \
         libintl \
         libjpeg-turbo \
@@ -14,18 +15,23 @@ RUN set -x \
         libwebp \
         nginx \
         pcre \
+        postgresql-libs \
+        sqlite-libs \
         tini \
  && apk add --virtual .build-deps \
         $PHPIZE_DEPS \
         cyrus-sasl-dev \
         freetype-dev \
         gettext-dev \
+        gmp-dev \
         icu-dev \
         libjpeg-turbo-dev \
         libmemcached-dev \
         libpng-dev \
         libwebp-dev \
         pcre-dev \
+        postgresql-dev \
+        sqlite-dev \
  && docker-php-ext-enable opcache \
  && docker-php-ext-configure gd \
         --with-webp-dir=/usr \
@@ -41,10 +47,13 @@ RUN set -x \
         exif \
         gd \
         gettext \
+        gmp \
         intl \
         mbstring \
         pcntl \
         pdo_mysql \
+        pdo_pgsql \
+        pdo_sqlite \
         zip \
  && pecl install \
         memcached \
