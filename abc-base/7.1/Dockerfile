@@ -65,6 +65,8 @@ RUN set -x \
   && rm -r \
     /var/cache/apk/* \
     /tmp/pear \
+  # Fix permissions, because we run as www-data.
+  && chmod 755 /var/lib/nginx /var/lib/nginx/tmp/ \
   # Disable PHP-FPM access logging, because nginx already logs for us.
   && sed -i \
     -e 's/^access\.log/;access.log/g' \
