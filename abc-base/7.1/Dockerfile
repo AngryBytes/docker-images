@@ -80,11 +80,5 @@ COPY bin/ /usr/local/bin/
 ENTRYPOINT ["/sbin/tini", "--"]
 CMD ["abc-start"]
 
-# Install composer. The variables here match the `composer/composer` images.
-ENV COMPOSER_HOME /composer
-RUN curl -sS https://getcomposer.org/installer \
-    | php -- --install-dir=/usr/local/bin --filename=composer \
-    && mkdir -p $COMPOSER_HOME
-
 # Config and data shared between project versions.
 VOLUME /shared
