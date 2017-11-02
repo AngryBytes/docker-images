@@ -1,7 +1,7 @@
 FROM php:7.1-fpm-alpine
 
-# Install dependencies and PHP extensions.
 RUN set -x \
+  # Install dependencies and PHP extensions.
   && apk update \
   && apk add \
     freetype \
@@ -61,6 +61,7 @@ RUN set -x \
   && docker-php-ext-enable \
     memcached \
     redis \
+  # Cleanup.
   && apk del .build-deps \
   && rm -r \
     /var/cache/apk/* \
