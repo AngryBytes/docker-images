@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 
 ENV COLLECTD_VERSION 5.8.0
 ENV COLLECTD_SHA256 b06ff476bbf05533cb97ae6749262cc3c76c9969f032bd8496690084ddeb15c9
@@ -18,7 +18,7 @@ RUN buildDeps=" \
     " \
     runDeps=" \
         libltdl7 \
-        librrd4 \
+        librrd8 \
     " \
     && set -x \
     && apt-get update \
