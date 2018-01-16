@@ -1,5 +1,6 @@
 # Extracted from certbot-auto on 2017-10-04.
 # https://github.com/certbot/certbot/blob/v0.20.0/certbot-auto
+# In addition, enum34 was removed.
 
 # This is the flattened list of packages certbot-auto installs. To generate
 # this, do
@@ -92,9 +93,6 @@ cryptography==2.0.2 \
     --hash=sha256:01e6e60654df64cca53733cda39446d67100c819c181d403afb120e0d2a71e1b \
     --hash=sha256:d46f4e5d455cb5563685c52ef212696f0a6cc1ea627603218eabbd8a095291d8 \
     --hash=sha256:3780b2663ee7ebb37cb83263326e3cd7f8b2ea439c448539d4b87de12c8d06ab
-enum34==1.1.2 \
-    --hash=sha256:2475d7fcddf5951e92ff546972758802de5260bf409319a9f1934e6bbc8b1dc7 \
-    --hash=sha256:35907defb0f992b75ab7788f65fedc1cf20ffa22688e0e6f6f12afc06b3ea501
 funcsigs==1.0.2 \
     --hash=sha256:330cc27ccbf7f1e992e69fef78261dc7c6569012cf397db8d3de0234e6c937ca \
     --hash=sha256:a7bb0f2cf3a3fd1ab2732cb49eba4252c2af4240442415b4abce3b87022a8f50
