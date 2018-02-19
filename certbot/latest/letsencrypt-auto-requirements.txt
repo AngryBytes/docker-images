@@ -1,23 +1,27 @@
-# Extracted from certbot-auto on 2017-10-04.
-# https://github.com/certbot/certbot/blob/v0.20.0/certbot-auto
+# Extracted from certbot-auto on 2018-01-26.
+# https://github.com/certbot/certbot/blob/v0.21.1/certbot-auto
 # In addition, enum34 was removed.
 
 # This is the flattened list of packages certbot-auto installs. To generate
 # this, do
 # `pip install --no-cache-dir -e acme -e . -e certbot-apache -e certbot-nginx`,
 # and then use `hashin` or a more secure method to gather the hashes.
+
 # Hashin example:
 # pip install hashin
 # hashin -r dependency-requirements.txt cryptography==1.5.2
 # sets the new certbot-auto pinned version of cryptography to 1.5.2
+
 argparse==1.4.0 \
     --hash=sha256:c31647edb69fd3d465a847ea3157d37bed1f95f19760b11a47aa91c04b666314 \
     --hash=sha256:62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4
+
 # This comes before cffi because cffi will otherwise install an unchecked
 # version via setup_requires.
 pycparser==2.14 \
     --hash=sha256:7959b4a74abdc27b312fed1c21e6caf9309ce0b29ea86b591fd2e99ecdf27f73 \
     --no-binary pycparser
+
 asn1crypto==0.22.0 \
     --hash=sha256:d232509fefcfcdb9a331f37e9c9dc20441019ad927c7d2176cf18ed5da0ba097 \
     --hash=sha256:cbbadd640d3165ab24b06ef25d1dca09a3441611ac15f6a6b452474fdf0aed1a
@@ -102,9 +106,16 @@ idna==2.5 \
 ipaddress==1.0.16 \
     --hash=sha256:935712800ce4760701d89ad677666cd52691fd2f6f0b340c8b4239a3c17988a5 \
     --hash=sha256:5a3182b322a706525c46282ca6f064d27a02cffbd449f9f47416f1dc96aa71b0
+josepy==1.0.1 \
+    --hash=sha256:354a3513038a38bbcd27c97b7c68a8f3dfaff0a135b20a92c6db4cc4ea72915e \
+    --hash=sha256:9f48b88ca37f0244238b1cc77723989f7c54f7b90b2eee6294390bacfe870acc
 linecache2==1.0.0 \
     --hash=sha256:e78be9c0a0dfcbac712fe04fbf92b96cddae80b1b842f24248214c8496f006ef \
     --hash=sha256:4b26ff4e7110db76eeb6f5a7b64a82623839d595c2038eeda662f2a2db78e97c
+# Using an older version of mock here prevents regressions of #5276.
+mock==1.3.0 \
+    --hash=sha256:3f573a18be94de886d1191f27c168427ef693e8dcfcecf95b170577b2eb69cbb \
+    --hash=sha256:1e247dbecc6ce057299eb7ee019ad68314bb93152e81d9a6110d35f4d5eca0f6
 ordereddict==1.1 \
     --hash=sha256:1c35b4ac206cef2d24816c89f89cf289dd3d38cf7c449bb3fab7bf6d43f01b1f
 packaging==16.8 \
@@ -181,28 +192,27 @@ zope.interface==4.1.3 \
     --hash=sha256:928138365245a0e8869a5999fbcc2a45475a0a6ed52a494d60dbdc540335fedd \
     --hash=sha256:0d841ba1bb840eea0e6489dc5ecafa6125554971f53b5acb87764441e61bceba \
     --hash=sha256:b09c8c1d47b3531c400e0195697f1414a63221de6ef478598a4f1460f7d9a392
-# Using an older version of mock here prevents regressions of #5276.
-mock==1.3.0 \
-    --hash=sha256:3f573a18be94de886d1191f27c168427ef693e8dcfcecf95b170577b2eb69cbb \
-    --hash=sha256:1e247dbecc6ce057299eb7ee019ad68314bb93152e81d9a6110d35f4d5eca0f6
+
 # Contains the requirements for the letsencrypt package.
 #
 # Since the letsencrypt package depends on certbot and using pip with hashes
 # requires that all installed packages have hashes listed, this allows
 # dependency-requirements.txt to be used without requiring a hash for a
 # (potentially unreleased) Certbot package.
+
 letsencrypt==0.7.0 \
     --hash=sha256:105a5fb107e45bcd0722eb89696986dcf5f08a86a321d6aef25a0c7c63375ade \
     --hash=sha256:c36e532c486a7e92155ee09da54b436a3c420813ec1c590b98f635d924720de9
-certbot==0.20.0 \
-    --hash=sha256:c6b6bd288700898d1eb31a65b605e3a5fc10f1e3213ce468207d76a2decb9d35 \
-    --hash=sha256:cabf505b64fb400c4239dcdbaeb882079477eb6a8442268596a8791b9e34de88
-acme==0.20.0 \
-    --hash=sha256:8b0cee192c0d76d6f4045bdb14b3cfd29d9720e0dad2046794a2a555f1eaccb7 \
-    --hash=sha256:45121aed6c8cc2f31896ac1083068dfdeb613f3edeff9576dc0d10632ea5a3d5
-certbot-apache==0.20.0 \
-    --hash=sha256:f7e4dbc154d2e9d1461118b6dd3dbd16f6892da468f060eeaa162aff673347e2 \
-    --hash=sha256:0ba499706451ffbccb172bcf93d6ef4c6cc8599157077a4fa6dfbe5a83c7921f
-certbot-nginx==0.20.0 \
-    --hash=sha256:b6e372e8740b20dd9bd63837646157ac97b3c9a65affd3954571b8e872ae9ecf \
-    --hash=sha256:6379fdf20d9a7651fe30bb8d4b828cbea178cc263d7af5a380fc4508d793b9ae
+
+certbot==0.21.1 \
+    --hash=sha256:08f026078807fbcfd7bfab44c4d827ee287738fefcc86fbe1493ce752d2fdccb \
+    --hash=sha256:e6c8e9b0b5e38834330831d5a91e1c08accdb9b4923855d14d524e7327e6c4ea
+acme==0.21.1 \
+    --hash=sha256:4b2b5ef80c755dfa30eb5c67ab4b4e66e7f205ad922b43170502c5f8d8ef1242 \
+    --hash=sha256:296e8abf4f5a69af1a892416faceea90e15f39e2920bf87beeaad1d6ce70a60b
+certbot-apache==0.21.1 \
+    --hash=sha256:faa4af1033564a0e676d16940775593fb849527b494a15f6a816ad0ed4fa273c \
+    --hash=sha256:0bce4419d4fdabbdda2223cff8db6794c5717632fb9511b00498ec00982a3fa5
+certbot-nginx==0.21.1 \
+    --hash=sha256:3fad3b4722544558ce03132f853e18da5e516013086aaa40f1036aa6667c70a9 \
+    --hash=sha256:55a32afe0950ff49d3118f93035463a46c85c2f399d261123f5fe973afdd4f64
