@@ -68,12 +68,13 @@ RUN set -x \
     /tmp/pear \
   # Fix permissions, because we run as www-data.
   && chmod 755 /var/lib/nginx /var/lib/nginx/tmp/ \
-  # Add global PHP configuration
-  && install -o root -g root -m 644 -t /usr/local/etc/php/conf.d/ php/docker-php-global.ini \
   # Disable PHP-FPM access logging, because nginx already logs for us.
   && sed -i \
     -e 's/^access\.log/;access.log/g' \
     /usr/local/etc/php-fpm.d/docker.conf
+
+# Configure PHP.
+COPY php/ /usr/local/etc/php/conf.d/
 
 # Configure nginx.
 EXPOSE 80
