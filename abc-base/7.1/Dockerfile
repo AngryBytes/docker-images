@@ -9,6 +9,7 @@ RUN set -x \
     icu-libs \
     libintl \
     libjpeg-turbo \
+    libldap \
     libmemcached \
     libpng \
     libsasl \
@@ -29,6 +30,7 @@ RUN set -x \
     libmemcached-dev \
     libpng-dev \
     libwebp-dev \
+    openldap-dev \
     pcre-dev \
     postgresql-dev \
     sqlite-dev \
@@ -49,6 +51,7 @@ RUN set -x \
     gettext \
     gmp \
     intl \
+    ldap \
     mbstring \
     pcntl \
     pdo_mysql \
