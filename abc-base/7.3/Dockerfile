@@ -73,13 +73,12 @@ RUN set -x \
     /tmp/pear \
   # Fix permissions, because we run as www-data.
   && chmod 755 /var/lib/nginx /var/lib/nginx/tmp/ \
-  # Disable PHP-FPM access logging, because nginx already logs for us.
-  && sed -i \
-    -e 's/^access\.log/;access.log/g' \
-    /usr/local/etc/php-fpm.d/docker.conf
+  # Remove PHP FPM config, because we'll replace it.
+  && rm -fr /usr/local/etc/php-fpm.*
 
-# Configure PHP.
+# Configure PHP and PHP FPM.
 COPY php/ /usr/local/etc/php/conf.d/
+COPY php-fpm.conf /usr/local/etc/
 
 # Configure nginx.
 EXPOSE 80
