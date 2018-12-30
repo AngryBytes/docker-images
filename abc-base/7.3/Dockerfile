@@ -60,11 +60,11 @@ RUN set -x \
     pdo_pgsql \
     pdo_sqlite \
     zip \
-  # FIXME: Add memcached once compatible.
-  # https://github.com/php-memcached-dev/php-memcached/issues/408
   && pecl install \
+    memcached \
     redis \
   && docker-php-ext-enable \
+    memcached \
     redis \
   # Cleanup.
   && apk del .build-deps \
