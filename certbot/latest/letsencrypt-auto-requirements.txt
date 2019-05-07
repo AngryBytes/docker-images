@@ -1,5 +1,5 @@
 # Extracted from certbot-auto on 2019-04-07.
-# https://github.com/certbot/certbot/blob/v0.34.0/certbot-auto
+# https://github.com/certbot/certbot/blob/v0.34.1/certbot-auto
 
 # This is the flattened list of packages certbot-auto installs.
 # To generate this, do (with docker and package hashin installed):
