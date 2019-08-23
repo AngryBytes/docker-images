@@ -1,5 +1,5 @@
-# Extracted from certbot-auto on 2019-04-07.
-# https://github.com/certbot/certbot/blob/v0.34.1/certbot-auto
+# Extracted from certbot-auto on 2019-08-21.
+# https://github.com/certbot/certbot/blob/v0.37.2/certbot-auto
 
 # This is the flattened list of packages certbot-auto installs.
 # To generate this, do (with docker and package hashin installed):
@@ -204,15 +204,15 @@ letsencrypt==0.7.0 \
     --hash=sha256:105a5fb107e45bcd0722eb89696986dcf5f08a86a321d6aef25a0c7c63375ade \
     --hash=sha256:c36e532c486a7e92155ee09da54b436a3c420813ec1c590b98f635d924720de9
 
-certbot==0.34.1 \
-    --hash=sha256:84b0990e9a0d1390f80467af4b29b6f65b80f6ed3b2b32aae6baba9d968e957f \
-    --hash=sha256:464f49371ed308aa17356a7152167defc342b67a8bbf8f4b8d9019788f6d4b52
-acme==0.34.1 \
-    --hash=sha256:6b989576dee7b57c25e391cbe93f817961cd9307aca1c429fe9fa36c1c3c95d3 \
-    --hash=sha256:7bdbdbfcec5c05834e91a2d950e964654401e0112a27afd34f5f03a5cadf23f1
-certbot-apache==0.34.1 \
-    --hash=sha256:a199202d212492fca92939e8424a1b312b0959843dd46c673888275407bb341d \
-    --hash=sha256:6223e61eb83ade317693e8542b480fc5ef9cd67fc54f8137a5ac13f0f75c62f7
-certbot-nginx==0.34.1 \
-    --hash=sha256:c115f5f3d47aacaa67790e5628148b0074b57d0e538cf0118231e832bc410e52 \
-    --hash=sha256:b92f457afa1a1c7596c2d22a6863b5917376677746996da73faa2b4e56692576
+certbot==0.37.2 \
+    --hash=sha256:8f6f0097fb2aac64f13e5d6974781ac85a051d84a6cb3f4d79c6b75c5ea451b8 \
+    --hash=sha256:e454368aa8d62559c673091b511319c130c8e0ea1c4dfa314ed7bdc91dd96ef5
+acme==0.37.2 \
+    --hash=sha256:5666ba927a9e7bf3f9ed5a268bd5acf627b5838fb409e8401f05d2aaaee188ba \
+    --hash=sha256:88798fae3bc692397db79c66930bd02fcaba8a6b1fba9a62f111dda42cc47f5c
+certbot-apache==0.37.2 \
+    --hash=sha256:e3ae7057f727506ab3796095ed66ca083f4e295d06f209ab96d2a3f37dea51b9 \
+    --hash=sha256:4cb44d1a7c56176a84446a11412c561479ed0fed19848632e61f104dbf6a3031
+certbot-nginx==0.37.2 \
+    --hash=sha256:a92dffdf3daca97db5d7ae2287e505110c3fa01c035b9356abb2ef9fa32e8695 \
+    --hash=sha256:404f7b5b7611f0dce8773739170f306e94a59b69528cb74337e7f354936ac061
