@@ -1,39 +1,37 @@
-FROM php:7.1-fpm-alpine
+FROM php:7.4-fpm-buster
 
+# Install dependencies and PHP extensions.
 RUN set -x \
-  # Install dependencies and PHP extensions.
-  && apk update \
-  && apk add \
-    freetype \
-    gmp \
-    icu-libs \
-    libintl \
-    libjpeg-turbo \
-    libldap \
-    libmemcached \
-    libpng \
-    libsasl \
-    libwebp \
-    nginx \
-    pcre \
-    postgresql-libs \
-    sqlite-libs \
+  && apt-get update \
+  && apt-get install -y --no-install-recommends \
+    libfreetype6 \
+    libgmpxx4ldbl \
+    libjpeg62-turbo \
+    libmemcached11 \
+    libmemcachedutil2 \
+    libpng16-16 \
+    libpq5 \
+    libwebp6 \
+    libzip4 \
+    nginx-light \
     tini \
-  && apk add --virtual .build-deps \
-    $PHPIZE_DEPS \
-    cyrus-sasl-dev \
-    freetype-dev \
-    gettext-dev \
-    gmp-dev \
-    icu-dev \
-    libjpeg-turbo-dev \
+    zlib1g \
+  && savedAptMark="$(apt-mark showmanual)" \
+  && apt-get install -y --no-install-recommends \
+    icu-devtools \
+    libfreetype6-dev \
+    libgmp-dev \
+    libicu-dev \
+    libjpeg62-turbo-dev \
+    libldap2-dev \
     libmemcached-dev \
+    libonig-dev \
     libpng-dev \
+    libpq-dev \
+    libsqlite3-dev \
     libwebp-dev \
-    openldap-dev \
-    pcre-dev \
-    postgresql-dev \
-    sqlite-dev \
+    libzip-dev \
+    zlib1g-dev \
   && docker-php-ext-enable opcache \
   && docker-php-ext-configure gd \
     --with-webp-dir=/usr \
@@ -65,19 +63,18 @@ RUN set -x \
     memcached \
     redis \
   # Cleanup.
-  && apk del .build-deps \
+  && apt-mark auto '.*' > /dev/null \
+  && apt-mark manual $savedAptMark > /dev/null \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && rm -r \
-    /var/cache/apk/* \
+    /var/lib/apt/lists/* \
     /tmp/pear \
-  # Fix permissions, because we run as www-data.
-  && chmod 755 /var/lib/nginx /var/lib/nginx/tmp/ \
-  # Disable PHP-FPM access logging, because nginx already logs for us.
-  && sed -i \
-    -e 's/^access\.log/;access.log/g' \
-    /usr/local/etc/php-fpm.d/docker.conf
+  # Remove PHP FPM config, because we'll replace it.
+  && rm -fr /usr/local/etc/php-fpm.*
 
-# Configure PHP.
+# Configure PHP and PHP FPM.
 COPY php/ /usr/local/etc/php/conf.d/
+COPY php-fpm.conf /usr/local/etc/
 
 # Configure nginx.
 EXPOSE 80
@@ -86,7 +83,7 @@ COPY nginx/ /etc/nginx/
 # Add the entry script, starting nginx and php-fpm.
 # Use tini, so nginx reparents itself to a proper init.
 COPY bin/ /usr/local/bin/
-ENTRYPOINT ["/sbin/tini", "--"]
+ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["abc-start"]
 
 # Config and data shared between project versions.
