@@ -4,14 +4,11 @@ FROM php:7.4-fpm-buster
 RUN set -x \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
-    libfreetype6 \
+    libgd3 \
     libgmpxx4ldbl \
-    libjpeg62-turbo \
     libmemcached11 \
     libmemcachedutil2 \
-    libpng16-16 \
     libpq5 \
-    libwebp6 \
     libzip4 \
     nginx-light \
     tini \
@@ -19,28 +16,21 @@ RUN set -x \
   && savedAptMark="$(apt-mark showmanual)" \
   && apt-get install -y --no-install-recommends \
     icu-devtools \
-    libfreetype6-dev \
+    libgd-dev \
     libgmp-dev \
     libicu-dev \
-    libjpeg62-turbo-dev \
     libldap2-dev \
     libmemcached-dev \
     libonig-dev \
-    libpng-dev \
     libpq-dev \
     libsqlite3-dev \
-    libwebp-dev \
     libzip-dev \
     zlib1g-dev \
   && docker-php-ext-enable opcache \
   && docker-php-ext-configure gd \
-    --with-webp-dir=/usr \
-    --with-jpeg-dir=/usr \
-    --with-png-dir=/usr \
-    --with-zlib-dir=/usr \
-    --with-freetype-dir=/usr \
+    --with-external-gd \
   && docker-php-ext-configure zip \
-    --with-zlib-dir=/usr \
+    --with-zip \
   && docker-php-ext-configure pdo_mysql \
     --with-zlib-dir=/usr \
   && docker-php-ext-install \

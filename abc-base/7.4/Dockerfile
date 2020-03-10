@@ -4,16 +4,13 @@ RUN set -x \
   # Install dependencies and PHP extensions.
   && apk update \
   && apk add \
-    freetype \
     gmp \
     icu-libs \
+    libgd \
     libintl \
-    libjpeg-turbo \
     libldap \
     libmemcached \
-    libpng \
     libsasl \
-    libwebp \
     libzip \
     nginx \
     oniguruma \
@@ -24,14 +21,11 @@ RUN set -x \
   && apk add --virtual .build-deps \
     $PHPIZE_DEPS \
     cyrus-sasl-dev \
-    freetype-dev \
+    gd-dev \
     gettext-dev \
     gmp-dev \
     icu-dev \
-    libjpeg-turbo-dev \
     libmemcached-dev \
-    libpng-dev \
-    libwebp-dev \
     libzip-dev \
     oniguruma-dev \
     openldap-dev \
@@ -40,13 +34,9 @@ RUN set -x \
     sqlite-dev \
   && docker-php-ext-enable opcache \
   && docker-php-ext-configure gd \
-    --with-webp-dir=/usr \
-    --with-jpeg-dir=/usr \
-    --with-png-dir=/usr \
-    --with-zlib-dir=/usr \
-    --with-freetype-dir=/usr \
+    --with-external-gd \
   && docker-php-ext-configure zip \
-    --with-zlib-dir=/usr \
+    --with-zip \
   && docker-php-ext-configure pdo_mysql \
     --with-zlib-dir=/usr \
   && docker-php-ext-install \
