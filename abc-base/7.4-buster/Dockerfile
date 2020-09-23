@@ -12,6 +12,7 @@ RUN set -x \
     libzip4 \
     nginx-light \
     tini \
+    unzip \
     zlib1g \
   && savedAptMark="$(apt-mark showmanual)" \
   && apt-get install -y --no-install-recommends \

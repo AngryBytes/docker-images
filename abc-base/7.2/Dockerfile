@@ -19,6 +19,7 @@ RUN set -x \
     postgresql-libs \
     sqlite-libs \
     tini \
+    unzip \
   && apk add --virtual .build-deps \
     $PHPIZE_DEPS \
     cyrus-sasl-dev \
