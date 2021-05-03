@@ -1,8 +1,0 @@
-#!/bin/sh
-set -e
-
-# The container entry-point. Starts nginx and php-fpm. Assumes it's running in
-# the project root, and tini (or another proper init system) is PID 1.
-
-nginx
-exec php-fpm
