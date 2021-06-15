@@ -83,7 +83,7 @@ COPY php-fpm.conf /usr/local/etc/
 
 # Configure nginx.
 EXPOSE 80
-COPY nginx /etc/
+COPY nginx/ /etc/nginx/
 
 # Add the entry script, starting nginx and php-fpm.
 # Use tini, so nginx reparents itself to a proper init.
