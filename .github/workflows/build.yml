@@ -19,6 +19,7 @@ jobs:
         - "abc-base:7.4"
         - "abc-base:7.4-buster"
         - "abc-base:8.0"
+        - "abc-base:8.1-rc"
     steps:
 
     - name: Checkout
