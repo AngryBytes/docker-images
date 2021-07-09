@@ -42,4 +42,7 @@ jobs:
       with:
         context: ${{ env.context_dir }}
         tags: angrybytes/${{ matrix.image }}
+        pull: true
         push: true
+        cache-from: type=registry,ref=angrybytes/${{ matrix.image }}
+        cache-to: type=inline
