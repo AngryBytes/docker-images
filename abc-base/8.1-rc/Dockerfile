@@ -61,7 +61,9 @@ RUN set -x \
     /var/lib/apt/lists/* \
     /tmp/pear \
   # Remove PHP FPM config, because we'll replace it.
-  && rm -fr /usr/local/etc/php-fpm.*
+  && rm -fr /usr/local/etc/php-fpm.* \
+  # Remove default index file.
+  && rm index.nginx-debian.html
 
 # Configure PHP and PHP FPM.
 COPY php/ /usr/local/etc/php/conf.d/
