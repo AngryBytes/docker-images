@@ -20,7 +20,9 @@ jobs:
         - "abc-base:7.3-buster"
         - "abc-base:7.4"
         - "abc-base:7.4-buster"
+        - "abc-base:7.4-bullseye"
         - "abc-base:8.0"
+        - "abc-base:8.0-bullseye"
         - "abc-base:8.1-rc"
     steps:
 
