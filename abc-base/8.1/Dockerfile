@@ -1,4 +1,4 @@
-FROM php:8.1-rc-fpm-bullseye
+FROM php:8.1-fpm-bullseye
 
 # Install dependencies and PHP extensions.
 RUN set -x \
