@@ -23,7 +23,7 @@ jobs:
         - "abc-base:7.4-bullseye"
         - "abc-base:8.0"
         - "abc-base:8.0-bullseye"
-        - "abc-base:8.1-rc"
+        - "abc-base:8.1"
     steps:
 
     - name: Checkout
