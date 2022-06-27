@@ -17,9 +17,6 @@ jobs:
       fail-fast: false
       matrix:
         image:
-        - "abc-base:7.3"
-        - "abc-base:7.3-buster"
-        - "abc-base:7.4"
         - "abc-base:7.4-buster"
         - "abc-base:7.4-bullseye"
         - "abc-base:8.0"
