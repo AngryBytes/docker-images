@@ -14,6 +14,12 @@ RUN set -x \
     tini \
     unzip \
     zlib1g \
+    supervisor \
+    rsyslog \
+    cron \
+    jq \
+    pwgen \
+    default-mysql-client \
   && savedAptMark="$(apt-mark showmanual)" \
   && apt-get install -y --no-install-recommends \
     icu-devtools \
@@ -65,19 +71,15 @@ RUN set -x \
   # Remove default index file.
   && rm index.nginx-debian.html
 
-# Configure PHP and PHP FPM.
-COPY php/ /usr/local/etc/php/conf.d/
-COPY php-fpm.conf /usr/local/etc/
+# Copy MinIO client.
+COPY --from=minio/mc:latest /usr/bin/mc /usr/bin/mc
 
-# Configure nginx.
-EXPOSE 80
+# Copy configuration files and scripts.
+COPY usrlocal/ /usr/local/
 COPY nginx/ /etc/nginx/
+COPY crontab /etc/crontab
 
-# Add the entry script, starting nginx and php-fpm.
-# Use tini, so nginx reparents itself to a proper init.
-COPY bin/ /usr/local/bin/
+# Image configuration.
+EXPOSE 80
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["abc-start"]
-
-# Config and data shared between project versions.
-VOLUME /shared
+CMD ["supervisord", "-c", "/usr/local/etc/supervisord.conf"]
