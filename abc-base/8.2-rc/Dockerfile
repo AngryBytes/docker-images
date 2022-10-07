@@ -1,6 +1,7 @@
 FROM php:8.2-rc-fpm-bullseye
 
 # Install dependencies and PHP extensions.
+COPY ./apt /etc/apt
 RUN set -x \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
@@ -10,7 +11,7 @@ RUN set -x \
     libmemcachedutil2 \
     libpq5 \
     libzip4 \
-    nginx-light \
+    nginx \
     tini \
     unzip \
     zlib1g \
@@ -67,9 +68,7 @@ RUN set -x \
     /var/lib/apt/lists/* \
     /tmp/pear \
   # Remove PHP FPM config, because we'll replace it.
-  && rm -fr /usr/local/etc/php-fpm.* \
-  # Remove default index file.
-  && rm index.nginx-debian.html
+  && rm -fr /usr/local/etc/php-fpm.*
 
 # Copy MinIO client.
 COPY --from=minio/mc:latest /usr/bin/mc /usr/bin/mc
