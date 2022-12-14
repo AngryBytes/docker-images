@@ -1,4 +1,4 @@
-FROM php:8.2-rc-fpm-bullseye
+FROM php:8.2-fpm-bullseye
 
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
