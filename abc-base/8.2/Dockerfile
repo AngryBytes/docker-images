@@ -68,7 +68,9 @@ RUN set -x \
     /var/lib/apt/lists/* \
     /tmp/pear \
   # Remove PHP FPM config, because we'll replace it.
-  && rm -fr /usr/local/etc/php-fpm.*
+  && rm -fr /usr/local/etc/php-fpm.* \
+  # Set a default locale for cron.
+  && echo "LANG=en_US.UTF_8" > /etc/default/locale
 
 # Copy MinIO client.
 COPY --from=minio/mc:latest /usr/bin/mc /usr/bin/mc
