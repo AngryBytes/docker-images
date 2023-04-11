@@ -70,7 +70,7 @@ RUN set -x \
   # Remove PHP FPM config, because we'll replace it.
   && rm -fr /usr/local/etc/php-fpm.* \
   # Set a default locale for cron.
-  && echo "LANG=en_US.UTF_8" > /etc/default/locale
+  && echo "LANG=C.UTF-8" > /etc/default/locale
 
 # Copy MinIO client.
 COPY --from=minio/mc:latest /usr/bin/mc /usr/bin/mc
