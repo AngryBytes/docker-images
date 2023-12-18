@@ -3,6 +3,13 @@ FROM php:8.2-fpm-bullseye
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
 RUN set -x \
+  # Symlink supervisord config.
+  && ln -s /usr/local/etc/supervisord.conf /etc/ \
+  # Web-writable state directory and nginx listener directory.
+  && install -d -o www-data -g www-data /run/www /run/listen \
+  # Empty default crontab.
+  && touch /etc/crontab \
+  # Run-time dependencies.
   && apt-get update \
   && apt-get install -y --no-install-recommends \
     libgd3 \
@@ -16,12 +23,12 @@ RUN set -x \
     unzip \
     zlib1g \
     supervisor \
-    rsyslog \
-    cron \
     jq \
     pwgen \
     default-mysql-client \
+    vim \
   && savedAptMark="$(apt-mark showmanual)" \
+  # Build-time dependencies.
   && apt-get install -y --no-install-recommends \
     icu-devtools \
     libgd-dev \
@@ -34,6 +41,7 @@ RUN set -x \
     libsqlite3-dev \
     libzip-dev \
     zlib1g-dev \
+  # Build PHP extensions.
   && docker-php-ext-enable opcache \
   && docker-php-ext-configure gd \
     --with-external-gd \
@@ -69,18 +77,20 @@ RUN set -x \
     /tmp/pear \
   # Remove PHP FPM config, because we'll replace it.
   && rm -fr /usr/local/etc/php-fpm.* \
-  # Set a default locale for cron.
-  && echo "LANG=C.UTF-8" > /etc/default/locale
+  # Ensure nginx directories are writable.
+  && rm -fr /var/log/nginx /var/cache/nginx \
+  && install -d -o www-data -g www-data /var/log/nginx /var/cache/nginx
 
 # Copy MinIO client.
 COPY --from=minio/mc:latest /usr/bin/mc /usr/bin/mc
 
+# Copy pocketcron.
+COPY --from=ghcr.io/stephank/pocketcron /usr/bin/pocketcron /usr/bin/pocketcron
+
 # Copy configuration files and scripts.
 COPY usrlocal/ /usr/local/
 COPY nginx/ /etc/nginx/
-COPY crontab /etc/crontab
 
 # Image configuration.
-EXPOSE 80
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["supervisord", "-c", "/usr/local/etc/supervisord.conf"]
+CMD ["supervisord"]
