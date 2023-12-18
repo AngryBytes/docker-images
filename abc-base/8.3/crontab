@@ -1,6 +1,0 @@
-PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-
-# No mailer available, so disable mail and use a shell wrapper to set up
-# logging to Docker stderr via syslog.
-MAILTO=""
-SHELL=/usr/local/libexec/cron-jobwrap
