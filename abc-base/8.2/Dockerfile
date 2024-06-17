@@ -3,6 +3,9 @@ FROM php:8.2-fpm-bookworm
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
 RUN set -x \
+  # Setup the nginx debian repo.
+  && VERSION_CODENAME="$(awk -F= '/^VERSION_CODENAME=/ { print $2 }' /etc/os-release)" \
+  && echo "deb [signed-by=/etc/apt/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/debian $VERSION_CODENAME nginx" > /etc/apt/sources.list.d/nginx.list \
   # Symlink supervisord config.
   && ln -s /usr/local/etc/supervisord.conf /etc/ \
   # Web-writable state directory and nginx listener directory.

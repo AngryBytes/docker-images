@@ -3,6 +3,10 @@ FROM php:8.1-fpm-bullseye
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
 RUN set -x \
+  # Setup the nginx debian repo.
+  && VERSION_CODENAME="$(awk -F= '/^VERSION_CODENAME=/ { print $2 }' /etc/os-release)" \
+  && echo "deb [signed-by=/etc/apt/nginx-archive-keyring.gpg] http://nginx.org/packages/mainline/debian $VERSION_CODENAME nginx" > /etc/apt/sources.list.d/nginx.list \
+  # Run-time dependencies.
   && apt-get update \
   && apt-get install -y --no-install-recommends \
     libgd3 \
@@ -16,6 +20,7 @@ RUN set -x \
     unzip \
     zlib1g \
   && savedAptMark="$(apt-mark showmanual)" \
+  # Build-time dependencies.
   && apt-get install -y --no-install-recommends \
     icu-devtools \
     libgd-dev \
@@ -28,6 +33,7 @@ RUN set -x \
     libsqlite3-dev \
     libzip-dev \
     zlib1g-dev \
+  # Build PHP extensions.
   && docker-php-ext-enable opcache \
   && docker-php-ext-configure gd \
     --with-external-gd \
