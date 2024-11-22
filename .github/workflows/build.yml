@@ -24,6 +24,7 @@ jobs:
         - "abc-base:8.1-user"
         - "abc-base:8.2"
         - "abc-base:8.3"
+        - "abc-base:8.4"
     steps:
 
     - name: Checkout
