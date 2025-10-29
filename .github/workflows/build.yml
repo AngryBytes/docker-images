@@ -6,63 +6,129 @@ on:
   pull_request:
     branches: [main]
   schedule:
-  - cron: '42 3 * * *'
+    - cron: "42 3 * * *"
   workflow_dispatch:
 
 jobs:
   build:
     name: build
-    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     strategy:
-      fail-fast: false
       matrix:
         image:
-        - "abc-base:8.3"
-        - "abc-base:8.4"
+          - "abc-base:8.3"
+          - "abc-base:8.4"
+        arch:
+          - amd64
+          - arm64
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: "${{ matrix.runner }}"
     steps:
+      - name: Checkout
+        uses: actions/checkout@v5
 
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Extract image name parts
+        env:
+          image_name: ${{ matrix.image }}
+        run: |
+          echo "image_repo=$(cut -d: -f1 <<< "$image_name")" >> $GITHUB_ENV
+          echo "image_tag=$(cut -d: -f2 <<< "$image_name")" >> $GITHUB_ENV
 
-    - name: Set context directory
-      env:
-        image_tag: ${{ matrix.image }}
-      run: |
-        echo "context_dir=./${image_tag/:/\/}" >> $GITHUB_ENV
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v3
-      with:
-        platforms: arm64
+      - name: Login to GitHub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-    - name: Login to GitHub
-      uses: docker/login-action@v3
-      with:
-        registry: ghcr.io
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: "./${{ env.image_repo }}/${{ env.image_tag }}/"
+          platforms: linux/${{ matrix.arch }}
+          tags: |
+            ghcr.io/angrybytes/${{ matrix.image }}
+            angrybytes/${{ matrix.image }}
+          pull: true
+          outputs: type=image,push-by-digest=true,name-canonical=true,push=${{ github.event_name != 'pull_request' && github.repository_owner == 'AngryBytes' }}
+          cache-from: type=registry,ref=ghcr.io/angrybytes/${{ matrix.image }}
+          cache-to: type=inline
 
-    - name: Login to DockerHub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Export digest
+        run: |
+          digests_dir="${{ runner.temp }}/digests/$image_repo/$image_tag"
+          mkdir -p "$digests_dir"
+          digest="${{ steps.build.outputs.digest }}"
+          touch "$digests_dir/${digest#sha256:}"
 
-    - name: Build and push
-      uses: docker/build-push-action@v5
-      with:
-        context: ${{ env.context_dir }}
-        platforms: linux/amd64,linux/arm64
-        tags: |
-          ghcr.io/angrybytes/${{ matrix.image }}
-          angrybytes/${{ matrix.image }}
-        pull: true
-        push: ${{ github.event_name != 'pull_request' && github.repository_owner == 'AngryBytes' }}
-        cache-from: type=registry,ref=ghcr.io/angrybytes/${{ matrix.image }}
-        cache-to: type=inline
+      - name: Upload digest
+        uses: actions/upload-artifact@v5
+        with:
+          name: "digests-${{ env.image_repo }}-${{ env.image_tag }}-${{ matrix.arch }}"
+          path: "${{ runner.temp }}/digests/"
+          if-no-files-found: error
+          retention-days: 1
+
+  merge:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v5
+        with:
+          path: "${{ runner.temp }}/digests"
+          pattern: "digests-*"
+          merge-multiple: true
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Create manifest list and push
+        working-directory: "${{ runner.temp }}/digests"
+        run: |
+          for subdir in */*; do
+            pushd "$subdir"
+            image_repo="$(cut -d/ -f1 <<< "$subdir")"
+            image_tag="$(cut -d/ -f2 <<< "$subdir")"
+
+            image_fullrepo="ghcr.io/angrybytes/$image_repo"
+            image_fullname="$image_fullrepo:$image_tag"
+            docker buildx imagetools create -t "$image_fullname" $(printf "$image_fullrepo@sha256:%s " *)
+            docker buildx imagetools inspect "$image_fullname"
+
+            image_fullrepo="angrybytes/$image_repo"
+            image_fullname="$image_fullrepo:$image_tag"
+            docker buildx imagetools create -t "$image_fullname" $(printf "$image_fullrepo@sha256:%s " *)
+            docker buildx imagetools inspect "$image_fullname"
+
+            popd
+          done
