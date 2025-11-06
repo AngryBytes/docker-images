@@ -72,6 +72,9 @@ jobs:
           outputs: "type=image,push-by-digest=true,name-canonical=true,push=${{ steps.cfg.outputs.should_push }}"
           cache-from: "type=registry,ref=ghcr.io/angrybytes/${{ matrix.image }}"
           cache-to: "type=inline"
+        env:
+          SOURCE_DATE_EPOCH: "0"
+          BUILDX_NO_DEFAULT_ATTESTATIONS: "1"
 
       - name: Export digest
         run: |
