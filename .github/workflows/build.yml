@@ -123,19 +123,35 @@ jobs:
         working-directory: "${{ runner.temp }}/digests"
         run: |
           for subdir in */*; do
+            echo "::group::Processing $subdir"
             pushd "$subdir"
             image_repo="$(cut -d/ -f1 <<< "$subdir")"
             image_tag="$(cut -d/ -f2 <<< "$subdir")"
 
-            image_fullrepo="ghcr.io/angrybytes/$image_repo"
-            image_fullname="$image_fullrepo:$image_tag"
-            docker buildx imagetools create -t "$image_fullname" $(printf "$image_fullrepo@sha256:%s " *)
-            docker buildx imagetools inspect "$image_fullname"
+            # Push to GitHub Packages and docker.io
+            for repo_base in ghcr.io/angrybytes angrybytes; do
+              image_fullrepo="$repo_base/$image_repo"
+              image_fullname="$image_fullrepo:$image_tag"
+              echo "-- Pushing to $image_fullname"
 
-            image_fullrepo="angrybytes/$image_repo"
-            image_fullname="$image_fullrepo:$image_tag"
-            docker buildx imagetools create -t "$image_fullname" $(printf "$image_fullrepo@sha256:%s " *)
-            docker buildx imagetools inspect "$image_fullname"
+              # Don't create a new manifest if nothing changed.
+              new_hashes="$(
+                echo * \
+                  | sort | xargs printf 'sha256:%s '
+              )"
+              old_hashes="$(
+                (docker buildx imagetools inspect --raw "$image_fullname" || echo '{"manifests":[]}') \
+                  | jq -r '.manifests[] | select(.platform.os != "unknown") | .digest' \
+                  | sort | xargs printf '%s '
+              )"
+              if [[ "$new_hashes" == "$old_hashes" ]]; then
+                echo "No change"
+              else
+                docker buildx imagetools create -t "$image_fullname" $(printf "$image_fullrepo@sha256:%s " *)
+                docker buildx imagetools inspect "$image_fullname"
+              fi
+            done
 
             popd
+            echo "::endgroup::"
           done
