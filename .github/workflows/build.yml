@@ -19,6 +19,7 @@ jobs:
           - "abc-base:8.4"
           - "abc-base:8.4-frankenphp"
           - "abc-base:8.5"
+          - "abc-base:8.5-frankenphp"
         arch:
           - amd64
           - arm64
