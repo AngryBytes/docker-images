@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1-php8.5-trixie
+FROM dunglas/frankenphp:1-php8.5-trixie@sha256:85eb3d7f012c6404c516cc60152e9ccfeac9c84ec5db9f234df8000373eae5ce
 
 # Install dependencies and PHP extensions.
 RUN set -x \
@@ -37,13 +37,13 @@ RUN set -x \
   && chown -R www-data:www-data /config /data
 
 # Copy Composer.
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest@sha256:8f3b7d97cd7436dae41d6af0dd6a53853779040ecac26e65544fc31746035705 /usr/bin/composer /usr/local/bin/composer
 
 # Copy MinIO client.
-COPY --from=minio/mc:latest /usr/bin/mc /usr/bin/mc
+COPY --from=minio/mc:latest@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727 /usr/bin/mc /usr/bin/mc
 
 # Copy pocketcron.
-COPY --from=ghcr.io/stephank/pocketcron /usr/bin/pocketcron /usr/bin/pocketcron
+COPY --from=ghcr.io/stephank/pocketcron@sha256:bd5b058816eb0f20236ae429fb26fb7c3f33878a77d5c4bc32f62f45be07af60 /usr/bin/pocketcron /usr/bin/pocketcron
 
 # Copy configuration files and scripts.
 COPY usrlocal/ /usr/local/
