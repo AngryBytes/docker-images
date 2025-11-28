@@ -36,9 +36,6 @@ RUN set -x \
   && rm -fr /app/public /etc/frankenphp \
   && chown -R www-data:www-data /config /data
 
-# Copy Composer.
-COPY --from=composer:latest@sha256:8f3b7d97cd7436dae41d6af0dd6a53853779040ecac26e65544fc31746035705 /usr/bin/composer /usr/local/bin/composer
-
 # Copy MinIO client.
 COPY --from=minio/mc:latest@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727 /usr/bin/mc /usr/bin/mc
 
