@@ -29,8 +29,6 @@ jobs:
           - arch: arm64
             runner: ubuntu-24.04-arm
     runs-on: "${{ matrix.runner }}"
-    outputs:
-      should_push: ${{ steps.cfg.outputs.should_push }}
     steps:
       - name: Checkout
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
@@ -40,7 +38,6 @@ jobs:
         run: |
           echo "image_repo=$(cut -d: -f1 <<< '${{ matrix.image }}')" >> $GITHUB_ENV
           echo "image_tag=$(cut -d: -f2 <<< '${{ matrix.image }}')" >> $GITHUB_ENV
-          echo "should_push=${{ github.event_name != 'pull_request' && github.repository_owner == 'AngryBytes' }}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
@@ -68,7 +65,7 @@ jobs:
             ghcr.io/angrybytes/${{ env.image_repo }}
             angrybytes/${{ env.image_repo }}
           pull: true
-          outputs: "type=image,push-by-digest=true,name-canonical=true,push=${{ steps.cfg.outputs.should_push }}"
+          outputs: "type=image,push-by-digest=true,name-canonical=true,push=${{ github.event_name == 'push' }}"
           cache-from: "type=registry,ref=ghcr.io/angrybytes/${{ matrix.image }}"
           cache-to: "type=inline"
         env:
@@ -92,7 +89,7 @@ jobs:
 
   merge:
     needs: [build]
-    if: "${{ needs.build.outputs.should_push }}"
+    if: "${{ github.event_name == 'push' }}"
     runs-on: ubuntu-latest
     steps:
       - name: Download digests
