@@ -1,0 +1,5 @@
+{
+  // Override global configuration.
+  schedule: ["at any time"],
+  automerge: true, // temporary
+}
