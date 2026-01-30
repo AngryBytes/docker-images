@@ -1,4 +1,4 @@
-FROM php:8.3-fpm-bookworm@sha256:ff8eeaa7f3784b42fa514e528d878672629f120817d43d6b392e2fe299dc78e3
+FROM php:8.3-fpm-bookworm@sha256:a2be4eabf6e1893d9f5ac9c18cc469a0d22ba0666edc12e210921fa1acf576ce
 
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
