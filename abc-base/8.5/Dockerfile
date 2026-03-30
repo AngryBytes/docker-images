@@ -94,7 +94,7 @@ COPY --from=ghcr.io/stephank/pocketcron@sha256:bd5b058816eb0f20236ae429fb26fb7c3
 
 # Copy configuration files and scripts.
 COPY usrlocal/ /usr/local/
-COPY nginx/ /etc/nginx/
+COPY etc/ /etc/
 
 # Image configuration.
 ENTRYPOINT ["/usr/bin/tini", "--"]
