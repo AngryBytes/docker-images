@@ -90,7 +90,7 @@ COPY --from=composer:latest@sha256:b148074c5cf8e5c564e92baa3f0d2e28ffa0361ede57a
 COPY --from=minio/mc:latest@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727 /usr/bin/mc /usr/bin/mc
 
 # Copy pocketcron.
-COPY --from=ghcr.io/stephank/pocketcron@sha256:bd5b058816eb0f20236ae429fb26fb7c3f33878a77d5c4bc32f62f45be07af60 /usr/bin/pocketcron /usr/bin/pocketcron
+COPY --from=ghcr.io/angrybytes/pocketcron@sha256:8529a9187d3ae44e04836ad1bb9d1ec499bcc02d6725324a43d035005cc34728 /usr/bin/pocketcron /usr/bin/pocketcron
 
 # Copy configuration files and scripts.
 COPY usrlocal/ /usr/local/
