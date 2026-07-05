@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1-php8.4-trixie@sha256:65152a633647a089470ea0952b7ad1d1de9bdd3425794f1cc1871f09f1df7d6d
+FROM dunglas/frankenphp:1-php8.4-trixie@sha256:3e87da2c351618379ba1ede206ad61d0e321eb35f81092f35e93248ed9a744e1
 
 # Install dependencies and PHP extensions.
 RUN set -x \
