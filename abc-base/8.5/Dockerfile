@@ -1,4 +1,4 @@
-FROM php:8.5-fpm-trixie@sha256:32ef9f35b567a741f24c5d2c3312f803fe6c9e34b7db46212f95fce675e1d13f
+FROM php:8.5-fpm-trixie@sha256:2f7ff3a9e9d7a44307db8f5295bb793565d23f6e1151b6219aaca46343a7aca8
 
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
