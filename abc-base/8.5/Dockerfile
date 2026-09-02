@@ -1,4 +1,4 @@
-FROM php:8.5-fpm-trixie@sha256:59aafce3fd6007cfb0c8615fbadb5fdc9e26e658a96a5528f6d4e85aae5e4c1f
+FROM php:8.5-fpm-trixie@sha256:70076c1cae0cd0ba6761832417e3a1df3e5560f0544eb0fe40357373e54420fe
 
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
@@ -84,7 +84,7 @@ RUN set -x \
   && install -d -o www-data -g www-data /var/log/nginx /var/cache/nginx
 
 # Copy Composer.
-COPY --from=composer:latest@sha256:d020706319701a44468968321dccd0fce6620190159a7a9ec195d78e6e971c71 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest@sha256:8fa35f42911ff8bbee92aa37d781de6799168d4a0535ac6991f1b250bc2e0245 /usr/bin/composer /usr/local/bin/composer
 
 # Copy MinIO client.
 COPY --from=minio/mc:latest@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727 /usr/bin/mc /usr/bin/mc
