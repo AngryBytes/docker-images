@@ -1,4 +1,4 @@
-FROM php:8.4-fpm-bookworm@sha256:075b11566518bfa979bb9f2fe2e5359148326d659b15a2f414c2c305a0479a4e
+FROM php:8.4-fpm-bookworm@sha256:6bfef8e416977aa41f48e3e42a40c1e08050d24e4a938c6edb421400bff24601
 
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
@@ -84,7 +84,7 @@ RUN set -x \
   && install -d -o www-data -g www-data /var/log/nginx /var/cache/nginx
 
 # Copy MinIO client.
-COPY --from=minio/mc:latest@sha256:a7fe349ef4bd8521fb8497f55c6042871b2ae640607cf99d9bede5e9bdf11727 /usr/bin/mc /usr/bin/mc
+COPY --from=pgsty/mc:latest@sha256:cfc83108c3abb371f8fb84d99c1fdc88f8c237e022409b0081fb7c0a3be634dd /usr/bin/mc /usr/bin/mc
 
 # Copy pocketcron.
 COPY --from=ghcr.io/angrybytes/pocketcron@sha256:8529a9187d3ae44e04836ad1bb9d1ec499bcc02d6725324a43d035005cc34728 /usr/bin/pocketcron /usr/bin/pocketcron
