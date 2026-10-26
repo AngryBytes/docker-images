@@ -349,7 +349,7 @@ RUN set -x \
 COPY --from=composer:latest@sha256:b6dcd72ca98fa19d0e5b8476de179859704891fad06dd9e0b96833d4c430a5fc /usr/bin/composer /usr/local/bin/composer
 
 # Copy MinIO client.
-COPY --from=pgsty/mc:latest@sha256:6ecdaec70bc5e8cf9d0e9a70c190f3beb1c83f11617ff4333f1fcd71ab1daf18 /usr/bin/mc /usr/bin/mc
+COPY --from=pgsty/mc:latest@sha256:770d5f14a70ecb88e0086d3a8061de726309bee986298fef06f09429fdd683cf /usr/bin/mc /usr/bin/mc
 
 # Copy pocketcron.
 COPY --from=ghcr.io/angrybytes/pocketcron@sha256:8529a9187d3ae44e04836ad1bb9d1ec499bcc02d6725324a43d035005cc34728 /usr/bin/pocketcron /usr/bin/pocketcron
