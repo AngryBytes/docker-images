@@ -88,7 +88,7 @@ RUN set -x \
 COPY --from=pgsty/mc:latest@sha256:770d5f14a70ecb88e0086d3a8061de726309bee986298fef06f09429fdd683cf /usr/bin/mc /usr/bin/mc
 
 # Copy pocketcron.
-COPY --from=ghcr.io/angrybytes/pocketcron@sha256:8529a9187d3ae44e04836ad1bb9d1ec499bcc02d6725324a43d035005cc34728 /usr/bin/pocketcron /usr/bin/pocketcron
+COPY --from=ghcr.io/angrybytes/pocketcron@sha256:bfdbbe9d65828d2e74fb73fc545418b4ad1b91f5bc80ac135362ee9fefbceaee /usr/bin/pocketcron /usr/bin/pocketcron
 
 # Copy configuration files and scripts.
 COPY usrlocal/ /usr/local/
