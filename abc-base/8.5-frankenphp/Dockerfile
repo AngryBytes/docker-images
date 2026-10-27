@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1-php8.5-trixie@sha256:73053ec45f0ad33c8e6f71f60ec3a11133899eecc73d7aa577b6d3a1ff5649c2
+FROM dunglas/frankenphp:1-php8.5-trixie@sha256:ada77754f475352a9105b7961f89ab17ece97048514799532d2d27a1dea2fda7
 
 # Install dependencies and PHP extensions.
 RUN set -x \
@@ -37,7 +37,7 @@ RUN set -x \
   && chown -R www-data:www-data /config /data
 
 # Copy MinIO client.
-COPY --from=pgsty/mc:latest@sha256:770d5f14a70ecb88e0086d3a8061de726309bee986298fef06f09429fdd683cf /usr/bin/mc /usr/bin/mc
+COPY --from=pgsty/mc:latest@sha256:ce62c9053c69ce12a527a322345b5ad9f44b5f8a7b8189f82e516f2e3f30f1d8 /usr/bin/mc /usr/bin/mc
 
 # Copy pocketcron.
 COPY --from=ghcr.io/angrybytes/pocketcron@sha256:d3c0dc1abbff683809a694ea7df80adcfd87e1ed6545795dc3ae6d554966cae2 /usr/bin/pocketcron /usr/bin/pocketcron
