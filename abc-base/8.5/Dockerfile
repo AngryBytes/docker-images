@@ -1,6 +1,6 @@
 # PHP 8.5.12 built from source with docker-library/php's 8.5/trixie/fpm Dockerfile (9dac3d0).
 
-FROM debian:trixie-slim@sha256:89c1ea91e897f0fe0a3731595330bc45b8bdef4047464a07116f891a94054b31
+FROM debian:trixie-slim@sha256:f6b08b09a05725f9431502d3b5714f5c4576e82c1a84fa1debe0c24a7e0c3ec4
 
 # Prevent Debian's PHP packages from being installed.
 RUN set -eux; \
@@ -346,7 +346,7 @@ RUN set -x \
   && install -d -o www-data -g www-data /var/log/nginx /var/cache/nginx
 
 # Copy Composer.
-COPY --from=composer:latest@sha256:b6dcd72ca98fa19d0e5b8476de179859704891fad06dd9e0b96833d4c430a5fc /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest@sha256:2cf275428757e5435a667bfc0d038b14520ca02be2b1b70d44a05c8c19e2de48 /usr/bin/composer /usr/local/bin/composer
 
 # Copy MinIO client.
 COPY --from=pgsty/mc:latest@sha256:ce62c9053c69ce12a527a322345b5ad9f44b5f8a7b8189f82e516f2e3f30f1d8 /usr/bin/mc /usr/bin/mc
