@@ -89,7 +89,7 @@ RUN set -x \
   && install -d -o www-data -g www-data /var/log/nginx /var/cache/nginx
 
 # Copy Composer.
-COPY --from=composer:latest@sha256:ca11f643d7791ebdd90a34fc20caf11380d434007ae539a9ea75cd9212e13dca /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:latest@sha256:0c8e663f14c94d07b3c45b175c51f5a14718508f21fe4dd7e54f09488dd0ed71 /usr/bin/composer /usr/local/bin/composer
 
 # Copy MinIO client.
 COPY --from=pgsty/mc:latest@sha256:b532278b7a3747dbab6fe45eebb40a653efa704e6758e24e9d9ec54fc96c1800 /usr/bin/mc /usr/bin/mc
