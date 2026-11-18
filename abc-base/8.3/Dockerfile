@@ -21,7 +21,7 @@ RUN set -x \
     libmemcachedutil2 \
     libpq5 \
     libzip4 \
-    nginx \
+    "nginx=1.31.9-1~${VERSION_CODENAME}" \
     tini \
     unzip \
     zlib1g \
