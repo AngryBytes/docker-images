@@ -1,0 +1,19 @@
+#!/bin/sh
+set -e
+
+# Small helper that takes a list of docroot-relative paths, and sets them up as
+# symlinks to the shared volume.
+#
+# By default, creates links in `/app` to `/shared`, but these can be
+# overridden with the `PROJECT_ROOT` and `SHARED_ROOT` environment variables.
+#
+# Note that the `PROJECT_ROOT` paths are trashed.
+
+SHARED_ROOT="${SHARED_ROOT:-/shared}"
+PROJECT_ROOT="${PROJECT_ROOT:-/app}"
+
+for f in "$@"; do
+  echo "${PROJECT_ROOT}/${f} -> ${SHARED_ROOT}/${f}"
+  rm -fr "${PROJECT_ROOT}/${f}"
+  ln -s "${SHARED_ROOT}/${f}" "${PROJECT_ROOT}/${f}"
+done
