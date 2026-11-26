@@ -5,21 +5,68 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Rebuilds the images that Debian has updates for.
+  schedule:
+    - cron: "0 4 * * *"
+      timezone: Europe/Amsterdam
+  workflow_dispatch:
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGES: abc-base:8.3 abc-base:8.4 abc-base:8.4-frankenphp abc-base:8.5 abc-base:8.5-frankenphp
 
 jobs:
+  upgrades:
+    name: Debian updates
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      images: ${{ steps.check.outputs.images }}
+      keys: ${{ steps.check.outputs.keys }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      # A scheduled run only builds the images with updates; other runs build all of them.
+      - name: Check the published images
+        id: check
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          images=()
+          keys='{}'
+          for image in $IMAGES; do
+            if result="$(.github/apt-upgrades.sh "angrybytes/$image")"; then
+              read -r key updates <<<"$result"
+            else
+              key=unpublished
+              updates=1
+            fi
+            echo "$image: $updates Debian updates (key $key)"
+            keys="$(jq -c --arg image "$image" --arg key "$key" '. + {($image): $key}' <<<"$keys")"
+            if [ "$EVENT" != schedule ] || [ "$updates" -gt 0 ]; then
+              images+=("$image")
+            fi
+          done
+          echo "images=$(jq -c -n '$ARGS.positional' --args "${images[@]}")" >>"$GITHUB_OUTPUT"
+          echo "keys=$keys" >>"$GITHUB_OUTPUT"
+
   build:
     name: build
+    needs: upgrades
+    if: ${{ needs.upgrades.outputs.images != '[]' }}
     permissions:
       contents: read
       packages: write
     strategy:
       matrix:
-        image:
-          - "abc-base:8.3"
-          - "abc-base:8.4"
-          - "abc-base:8.4-frankenphp"
-          - "abc-base:8.5"
-          - "abc-base:8.5-frankenphp"
+        image: ${{ fromJSON(needs.upgrades.outputs.images) }}
         arch:
           - amd64
           - arm64
@@ -61,11 +108,12 @@ jobs:
         with:
           context: "./${{ env.image_repo }}/${{ env.image_tag }}/"
           platforms: linux/${{ matrix.arch }}
+          build-args: APT_UPGRADES=${{ fromJSON(needs.upgrades.outputs.keys)[matrix.image] }}
           tags: |
             ghcr.io/angrybytes/${{ env.image_repo }}
             angrybytes/${{ env.image_repo }}
           pull: true
-          outputs: "type=image,push-by-digest=true,name-canonical=true,push=${{ github.event_name == 'push' }}"
+          outputs: "type=image,push-by-digest=true,name-canonical=true,push=${{ github.event_name != 'pull_request' }}"
           cache-from: "type=registry,ref=ghcr.io/angrybytes/${{ matrix.image }}"
           cache-to: "type=inline"
         env:
@@ -89,7 +137,7 @@ jobs:
 
   merge:
     needs: [build]
-    if: "${{ github.event_name == 'push' }}"
+    if: "${{ github.event_name != 'pull_request' }}"
     runs-on: ubuntu-latest
     steps:
       - name: Download digests

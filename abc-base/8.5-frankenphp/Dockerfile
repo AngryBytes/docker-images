@@ -1,5 +1,9 @@
 FROM dunglas/frankenphp:1-php8.5-trixie@sha256:b8e0919047838ea32771ef573d74df9a9128de1e908a999366e26c11bc6e7ba4
 
+# Set by the build workflow from .github/apt-upgrades.sh: it changes when Debian has updates
+# for this image's packages, so the build reruns the apt steps instead of using the cache.
+ARG APT_UPGRADES
+
 # Install dependencies and PHP extensions.
 RUN set -x \
   # Symlink supervisord config.
@@ -10,6 +14,7 @@ RUN set -x \
   && touch /etc/crontab \
   # Run-time dependencies.
   && apt-get update \
+  && apt-get upgrade -y \
   && apt-get install -y --no-install-recommends \
     default-mysql-client \
     jq \

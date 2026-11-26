@@ -1,5 +1,9 @@
 FROM php:8.3-fpm-bookworm@sha256:ad13a726ec26a35fef5a1a0e0002ebf37dae4f2a9c51f9744ebc046581e1f7c3
 
+# Set by the build workflow from .github/apt-upgrades.sh: it changes when Debian has updates
+# for this image's packages, so the build reruns the apt steps instead of using the cache.
+ARG APT_UPGRADES
+
 # Install dependencies and PHP extensions.
 COPY ./apt /etc/apt
 RUN set -x \
@@ -14,6 +18,7 @@ RUN set -x \
   && touch /etc/crontab \
   # Run-time dependencies.
   && apt-get update \
+  && apt-get upgrade -y \
   && apt-get install -y --no-install-recommends \
     libgd3 \
     libgmpxx4ldbl \
@@ -30,6 +35,8 @@ RUN set -x \
     pwgen \
     default-mysql-client \
     vim \
+  # The pinned nginx version only changes with this file.
+  && apt-mark hold nginx \
   && savedAptMark="$(apt-mark showmanual)" \
   # Build-time dependencies.
   && apt-get install -y --no-install-recommends \
