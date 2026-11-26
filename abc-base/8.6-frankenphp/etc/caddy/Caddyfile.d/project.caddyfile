@@ -1,0 +1,10 @@
+# Example default ABC CMS virtualhost.
+http://, :8001 {
+	root /app/cms/public
+	php_server {
+		worker {
+			file /app/cms/public/index.php
+			env ABC_RUNTIME Abc\AbcBundle\Runtime\FrankenPhp
+		}
+	}
+}

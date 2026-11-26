@@ -1,0 +1,6 @@
+{
+	skip_install_trust
+	frankenphp
+}
+
+import /etc/caddy/Caddyfile.d/*.caddyfile
